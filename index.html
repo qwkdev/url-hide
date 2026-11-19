@@ -244,7 +244,7 @@ main {
 		<input id="show" type="text" placeholder="https://..." oninput="update()">
 
 		<p>Output:</p>
-		<h2 id="output">https://djn.kfv@klijnfkisjruonufsodijsoinsdfojkn</h2>
+		<h2 id="output">...</h2>
 		<div id="buttons">
 			<button onclick="copy()">Copy URL</button>
 			<button id="regen" onclick="update()">
@@ -298,6 +298,11 @@ main {
 		function update() {
 			let urls = [hide.value, show.value];
 			urls = urls.map(u => u.replace(/^https?:\/\//, ''));
+			if (urls.every(u=>!u)) {
+				output.innerText = '...';
+				return;
+			}
+			
 			urls[1] = encode(urls[1].replaceAll('/', '\u2215'));
 			output.innerText = `https://${urls[1]}@${encodeAll(urls[0])}`;
 		}
