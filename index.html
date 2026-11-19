@@ -276,7 +276,7 @@ main {
 		function encodeAll(s) {
 			let raw = new Set(Array.from(s).map((c, n) => [c, n]).filter(c => alwaysRaw.includes(c[0])).map(c => c[1]));
 			let allowedLen = Array.from(s).filter(c => allowedRaw.includes(c)).length - raw.size;
-			const amt = allowedLen < 5 ? 0 : Math.min(Math.round((allowedLen * 0.3) + raw.size), s.length);
+			const amt = Math.min(Math.round((allowedLen * 0.4) + raw.size), s.length);
 
 			let n = 0;
 			while (raw.size < amt && n < 20) {
@@ -302,7 +302,7 @@ main {
 				output.innerText = '...';
 				return;
 			}
-			
+
 			urls[1] = encode(urls[1].replaceAll('/', '\u2215'));
 			output.innerText = `https://${urls[1]}@${encodeAll(urls[0])}`;
 		}
