@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+
+	<style>
+:root {
+	--bg: #111;
+
+	--text: #fff;
+	--text-s: #fff5;
+	--text2: #777;
+	--text2-s: #7775;
+
+	--u: 1.5vw;
+}
+*[hidden] {
+	display: none !important;
+}
+
+body {
+	margin: 0;
+	
+	overflow-x: hidden;
+	position: relative;
+	background: var(--bg);
+	height: max-content;
+	min-height: 100vh;
+	min-height: 100dvh;
+	box-sizing: border-box;
+
+    scrollbar-width: none;
+}
+body::-webkit-scrollbar {
+	display: none;
+}
+
+#top a, #top p {
+	--h: 100px;
+	height: var(--h);
+	box-sizing: border-box;
+	background: #f5f5ff1c;
+	backdrop-filter: blur(20px);
+	border: calc(.2 * var(--u)) solid #ffffff1f;
+	border-radius: calc(2 * var(--u));
+	box-shadow: inset 0 calc(.8 * var(--h)) calc(.4 * var(--h)) calc(-.4 * var(--h)) #f5f5ff0f;
+
+	transition: .2s;
+
+	&:not(.nohover) {
+		&:hover {
+			background: #f5f5ff21;
+			box-shadow: inset 0 calc(.8 * var(--h)) calc(.4 * var(--h)) calc(-.4 * var(--h)) #f5f5ff14;
+			border-top-color: #ffffff26;
+			transform: scale(1.02);
+		}
+		&:active {
+			transform: scale(0.97);
+		}
+	}
+}
+
+#top {
+	position: absolute;
+	top: calc(1 * var(--u));
+	left: calc(1 * var(--u));
+
+	display: flex;
+	gap: calc(1 * var(--u));
+
+	z-index: 999;
+
+	a, p {
+		width: max-content;
+		--h: calc(5 * var(--u));
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: calc(3 * var(--u));
+
+		padding: 0 calc(2.5 * var(--u));
+		margin: 0;
+		color: var(--text);
+		font-family: Arial;
+		font-size: calc(2 * var(--u));
+
+		&::selection {
+			background: var(--text-s);
+		}
+	}
+	a {
+		font-weight: 700;
+		user-select: none;
+	}
+}
+
+#bottom {
+	position: absolute;
+	bottom: calc(1 * var(--u));
+	right: calc(1 * var(--u));
+
+	display: flex;
+	flex-direction: row-reverse;
+	gap: calc(.7 * var(--u));
+
+	a {
+		--c: #777;
+		background: #000;
+		border: 1px solid var(--c);
+		text-decoration: none;
+
+		margin: 0;
+		color: var(--c);
+		font-family: monospace;
+		font-size: calc(1.2 * var(--u));
+		line-height: calc(1.7 * var(--u));
+		padding: 0 calc(.5 * var(--u));
+		border-radius: calc(2 * var(--u));
+		transform-origin: center;
+		transition: .2s;
+
+		&:hover {
+			--c: #aaa;
+			transform: scale(1.03);
+		}
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+}
+
+main {
+	position: absolute;
+	top: 49%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	h1, h2, p, input, button, u {
+		margin: 0;
+		color: var(--text);
+		font-family: Arial;
+
+		&::selection { background: var(--text-s); }
+	}
+	h1 {
+		font-size: calc(4 * var(--u));
+		margin-bottom: calc(1 * var(--u));
+	}
+	p {
+		margin-top: calc(2 * var(--u));
+		margin-bottom: calc(.5 * var(--u));
+		font-size: calc(2 * var(--u));
+	}
+
+	input, h2, button {
+		background: #f5f5ff1c;
+		border: calc(.2 * var(--u)) solid #ffffff1f;
+		border-radius: calc(1 * var(--u));
+		box-sizing: border-box;
+	}
+	input {
+		width: calc(40 * var(--u));
+		height: calc(6 * var(--u));
+
+		padding: 0 calc(1.75 * var(--u));
+		font-size: calc(2 * var(--u));
+
+		&:focus {
+			outline: none;
+		}
+	}
+	h2 {
+		width: calc(40 * var(--u));
+		height: min-content;
+		padding: calc(1 * var(--u));
+		word-break: break-all;
+	}
+	button {
+		height: calc(4.5 * var(--u));
+		font-size: calc(2 * var(--u));
+		padding: 0 calc(2 * var(--u));
+		transition: .2s;
+
+		&:hover {
+			transform: scale(1.03);
+		}
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+	#regen {
+		width: calc(4.5 * var(--u));
+		padding: 0;
+		position: relative;
+
+		svg {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			height: 70%;
+			aspect-ratio: 1/1;
+
+			stroke: var(--text);
+		}
+	}
+}
+#buttons {
+	display: flex;
+	gap: calc(.5 * var(--u));
+	margin-top: calc(.5 * var(--u));
+
+	align-items: center;
+	justify-content: center;
+}
+
+@media screen and (min-aspect-ratio: 2/3) {
+	:root {
+		--u: 1vh;
+	}
+}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<a>url.qwk.gg</a>
+	</div>
+
+	<main>
+		<h1>URL Obfuscator</h1>
+		
+		<p>Enter URL to <u>hide</u>:</p>
+		<input id="hide" type="text" placeholder="https://..." oninput="update()">
+
+		<p>Enter URL to <u>show</u>:</p>
+		<input id="show" type="text" placeholder="https://..." oninput="update()">
+
+		<p>Output:</p>
+		<h2 id="output">https://djn.kfv@klijnfkisjruonufsodijsoinsdfojkn</h2>
+		<div id="buttons">
+			<button onclick="copy()">Copy URL</button>
+			<button id="regen" onclick="update()">
+				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 20V17.2916" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+			</button>
+		</div>
+		
+	</main>
+
+	<div id="bottom">
+		<a href="https://qwk.gg/" target="_blank">qwk.gg</a>
+	</div>
+
+	<script>
+		const hide = document.getElementById('hide');
+		const show = document.getElementById('show');
+		const output = document.getElementById('output');
+
+		const reserved = '!#$&\'()*+,/:;=?@[]';
+		function encode(s) {
+			return Array.from(s).map(c => {
+				if (!reserved.includes(c)) return c;
+				return Array.from(new TextEncoder().encode(c))
+					.map(b => '%'+b.toString(16).padStart(2, '0').toUpperCase()).join('');
+			}).join('');
+		}
+		const alwaysRaw = '.'+reserved;
+		const allowedRaw = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_~';
+		function encodeAll(s) {
+			let raw = new Set(Array.from(s).map((c, n) => [c, n]).filter(c => alwaysRaw.includes(c[0])).map(c => c[1]));
+			let allowedLen = Array.from(s).filter(c => allowedRaw.includes(c)).length - raw.size;
+			const amt = allowedLen < 5 ? 0 : Math.min(Math.round((allowedLen * 0.3) + raw.size), s.length);
+
+			let n = 0;
+			while (raw.size < amt && n < 20) {
+				n++;
+				const index = Math.floor(Math.random() * s.length);
+				if (allowedRaw.includes(s[index])) raw.add(index);
+			}
+
+			return Array.from(s).map((c, n) => {
+				if (raw.has(n)) return c;
+				return Array.from(new TextEncoder().encode(c))
+					.map(b => '%'+b.toString(16).padStart(2, '0').toUpperCase()).join('');
+			}).join('');
+		}
+
+		function copy() {
+			navigator.clipboard.writeText(output.textContent);
+		}
+		function update() {
+			let urls = [hide.value, show.value];
+			urls = urls.map(u => u.replace(/^https?:\/\//, ''));
+			urls[1] = encode(urls[1].replaceAll('/', '\u2215'));
+			output.innerText = `https://${urls[1]}@${encodeAll(urls[0])}`;
+		}
+	</script>
+</body>
+</html>
