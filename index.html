@@ -142,7 +142,7 @@ main {
 	flex-direction: column;
 	align-items: center;
 
-	h1, h2, p, input, button, u {
+	h1, h2, p, input[type="text"], button, u, span {
 		margin: 0;
 		color: var(--text);
 		font-family: Arial;
@@ -159,13 +159,13 @@ main {
 		font-size: calc(2 * var(--u));
 	}
 
-	input, h2, button {
+	input[type="text"], h2, button {
 		background: #f5f5ff1c;
 		border: calc(.2 * var(--u)) solid #ffffff1f;
 		border-radius: calc(1 * var(--u));
 		box-sizing: border-box;
 	}
-	input {
+	input[type="text"] {
 		width: calc(40 * var(--u));
 		height: calc(6 * var(--u));
 
@@ -213,13 +213,58 @@ main {
 		}
 	}
 }
-#buttons {
+#buttons, #slider {
 	display: flex;
 	gap: calc(.5 * var(--u));
 	margin-top: calc(.5 * var(--u));
 
 	align-items: center;
 	justify-content: center;
+}
+
+#slider {
+	span {
+		font-variant-numeric: tabular-nums;
+		width: calc(4 * var(--u));
+		font-size: calc(1.5 * var(--u));;
+		text-align: center;
+	}
+	input {
+		appearance: none;
+		-webkit-appearance: none;
+		background: transparent;
+		cursor: pointer;
+		width: calc(20 * var(--u));
+		position: relative;
+		--fill: 0%;
+	}
+	input::-webkit-slider-runnable-track {
+		background: linear-gradient(to right, #08f var(--fill), #f5f5ff1c var(--fill)) !important;
+		border-radius: calc(1 * var(--u));
+		height: calc(1 * var(--u));
+	}
+	input::-moz-range-track {
+		background: linear-gradient(to right, #08f var(--fill), #f5f5ff1c var(--fill)) !important;
+		border-radius: calc(1 * var(--u));
+		height: calc(1 * var(--u));
+	}
+	input::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		margin-top: calc(-.27 * var(--u));
+		border: none;
+		border-radius: 50%;
+		background-color: #ccc;
+		width: calc(1.5 * var(--u));
+		height: calc(1.5 * var(--u));
+	}
+	input::-moz-range-thumb {
+		border: none;
+		border-radius: 50%;
+		background-color: #ccc;
+		width: calc(1.5 * var(--u));
+		height: calc(1.5 * var(--u));
+	}
 }
 
 @media screen and (min-aspect-ratio: 2/3) {
@@ -251,7 +296,11 @@ main {
 				<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g><path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 20V17.2916" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
 			</button>
 		</div>
-		
+		<p>Strength:</p>
+		<div id="slider">
+			<input id="rate" type="range" value="5" min="0" max="10" step="1" oninput="changeRate()">
+			<span id="ratelabel">50%</span>
+		</div>
 	</main>
 
 	<div id="bottom">
@@ -261,7 +310,17 @@ main {
 	<script>
 		const hide = document.getElementById('hide');
 		const show = document.getElementById('show');
+		const rate = document.getElementById('rate');
+		const ratelabel = document.getElementById('ratelabel');
 		const output = document.getElementById('output');
+
+		function changeRate() {
+			rate.value = Math.max(Math.min(rate.value, 10), 0);
+			rate.style.setProperty('--fill', `${rate.value*10}%`);
+			ratelabel.innerText = `${rate.value*10}%`;
+			update();
+		}
+		
 
 		const reserved = '!#$&\'()*+,/:;=?@[]';
 		function encode(s) {
@@ -276,10 +335,15 @@ main {
 		function encodeAll(s) {
 			let raw = new Set(Array.from(s).map((c, n) => [c, n]).filter(c => alwaysRaw.includes(c[0])).map(c => c[1]));
 			let allowedLen = Array.from(s).filter(c => allowedRaw.includes(c)).length - raw.size;
-			const amt = Math.min(Math.round((allowedLen * 0.4) + raw.size), s.length);
+			rate.value = Math.max(Math.min(rate.value, 10), 0);
+			let amt = Math.min(Math.round((allowedLen * 
+				(1 - rate.value/10)
+			) + raw.size), s.length);
+			if (rate.value == 0) amt = s.length;
+			if (rate.value == 10) amt = 0;
 
 			let n = 0;
-			while (raw.size < amt && n < 20) {
+			while (raw.size < amt && n < 1000) {
 				n++;
 				const index = Math.floor(Math.random() * s.length);
 				if (allowedRaw.includes(s[index])) raw.add(index);
@@ -306,6 +370,8 @@ main {
 			urls[1] = encode(urls[1].replaceAll('/', '\u2215'));
 			output.innerText = `https://${urls[1]}@${encodeAll(urls[0])}`;
 		}
+
+		changeRate();
 	</script>
 </body>
 </html>
